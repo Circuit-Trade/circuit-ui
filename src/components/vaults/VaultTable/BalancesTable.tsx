@@ -1,34 +1,12 @@
 import { UserBalance } from '@/types';
 import { createColumnHelper } from '@tanstack/react-table';
-import { twMerge } from 'tailwind-merge';
 
-import { Table } from '@/components/elements/Table';
+import { NumericValue, Table } from '@/components/elements/Table';
 
 import { useVaultBalances } from '@/hooks/table-data/useVaultBalances';
 import { useCurrentVault } from '@/hooks/useVault';
 
 import { OrderedSpotMarkets } from '@/constants/environment';
-import { sourceCodePro } from '@/constants/fonts';
-
-const NumericValue = ({
-	children,
-	widthClass,
-}: {
-	children: React.ReactNode;
-	widthClass?: string;
-}) => {
-	return (
-		<div
-			className={twMerge(
-				sourceCodePro.className,
-				widthClass,
-				'whitespace-nowrap'
-			)}
-		>
-			{children}
-		</div>
-	);
-};
 
 const columnHelper = createColumnHelper<UserBalance>();
 
@@ -50,14 +28,14 @@ const columns = [
 			id: 'baseBalance',
 			header: () => 'Balance',
 			cell: (info) => (
-				<NumericValue widthClass="w-[215px]">{info.getValue()}</NumericValue>
+				<NumericValue className="w-[215px]">{info.getValue()}</NumericValue>
 			),
 		}
 	),
 	columnHelper.accessor('quoteValue', {
 		header: () => 'Notional',
 		cell: (info) => (
-			<NumericValue widthClass="w-[190px]">
+			<NumericValue className="w-[190px]">
 				${info.getValue().prettyPrint()}
 			</NumericValue>
 		),
@@ -65,7 +43,7 @@ const columns = [
 	columnHelper.accessor('liquidationPrice', {
 		header: () => 'Liq. Price',
 		cell: (info) => (
-			<NumericValue widthClass="w-[140px]">
+			<NumericValue className="w-[140px]">
 				${info.getValue().prettyPrint()}
 			</NumericValue>
 		),

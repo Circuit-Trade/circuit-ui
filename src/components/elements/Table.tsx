@@ -7,6 +7,9 @@ import {
 	getCoreRowModel,
 	useReactTable,
 } from '@tanstack/react-table';
+import { twMerge } from 'tailwind-merge';
+
+import { sourceCodePro } from '@/constants/fonts';
 
 const TableHeader = <T extends RowData>({
 	headerGroups,
@@ -46,13 +49,33 @@ const TableBody = <T extends RowData>({
 			{rowModel.rows.map((row) => (
 				<tr key={row.id}>
 					{row.getVisibleCells().map((cell) => (
-						<td key={cell.id} className="px-2 py-1">
+						<td key={cell.id} className="p-2">
 							{flexRender(cell.column.columnDef.cell, cell.getContext())}
 						</td>
 					))}
 				</tr>
 			))}
 		</tbody>
+	);
+};
+
+export const NumericValue = ({
+	children,
+	className,
+}: {
+	children: React.ReactNode;
+	className?: string;
+}) => {
+	return (
+		<div
+			className={twMerge(
+				sourceCodePro.className,
+				className,
+				'whitespace-nowrap'
+			)}
+		>
+			{children}
+		</div>
 	);
 };
 

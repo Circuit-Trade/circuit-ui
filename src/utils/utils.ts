@@ -67,3 +67,7 @@ export function shortenPubkey(pubkey: string | undefined, length = 4) {
 	if (!pubkey) return '';
 	return `${pubkey.slice(0, length)}...${pubkey.slice(44 - length, 44)}`;
 }
+
+export const getBaseAssetSymbol = (marketName: string) => {
+	return marketName.replace('-PERP', '');
+};

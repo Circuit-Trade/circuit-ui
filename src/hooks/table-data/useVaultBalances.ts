@@ -1,5 +1,5 @@
 import { UserBalance } from '@/types';
-import { useDriftClientIsReady } from '@drift-labs/react';
+import { useCommonDriftStore, useDriftClientIsReady } from '@drift-labs/react';
 import {
 	BigNum,
 	PRICE_PRECISION_EXP,
@@ -14,15 +14,12 @@ import invariant from 'tiny-invariant';
 
 import { OrderedSpotMarkets } from '@/constants/environment';
 
-import { useCurrentVault } from '../useVault';
-
 export const useVaultBalances = (
 	vaultDriftUserAccount: UserAccount | undefined,
 	vaultDriftUser: User | undefined
 ) => {
 	const driftClientIsReady = useDriftClientIsReady();
-	const vault = useCurrentVault();
-	const driftClient = vault?.vaultDriftClient;
+	const driftClient = useCommonDriftStore((s) => s.driftClient.client);
 	const [userBalances, setUserBalances] = useState<UserBalance[]>([]);
 
 	useEffect(() => {

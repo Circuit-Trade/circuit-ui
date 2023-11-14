@@ -6,6 +6,8 @@
 	/* Main Colors */
 	--main-blue: #88c9ff;
 	--secondary-blue: #08121b;
+	--success-green: #66d485;
+	--negative-red: #d46d66;
 
 	/* Font Colors */
 	--text-default: #ccc;
@@ -15,6 +17,8 @@
 	--text-selected: var(--main-blue);
 	--text-button-link-hover: #e9b735;
 	--text-button-link-active: #a37500;
+	--text-success-green: var(--success-green);
+	--text-negative-red: var(--negative-red);
 
 	/* Background/Border Colors */
 	--container-bg: #000;
