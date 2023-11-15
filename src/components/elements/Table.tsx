@@ -1,3 +1,4 @@
+import { COMMON_UI_UTILS } from '@drift/common';
 import {
 	ColumnDef,
 	HeaderGroup,
@@ -10,6 +11,8 @@ import {
 import { twMerge } from 'tailwind-merge';
 
 import { sourceCodePro } from '@/constants/fonts';
+
+import MarketIcon from './MarketIcon';
 
 const TableHeader = <T extends RowData>({
 	headerGroups,
@@ -59,7 +62,49 @@ const TableBody = <T extends RowData>({
 	);
 };
 
-export const NumericValue = ({
+const MarketCell = ({
+	className,
+	marketName,
+	direction,
+}: {
+	className?: string;
+	marketName: string;
+	direction: 'short' | 'long' | 'buy' | 'sell';
+}) => {
+	const textColor =
+		direction === 'long' || direction === 'buy'
+			? 'text-text-success-green'
+			: 'text-text-negative-red';
+
+	return (
+		<div className={twMerge('flex gap-2 items-center', className)}>
+			<MarketIcon marketName={marketName} />
+			<div>
+				<div>{marketName}</div>
+				<div className={twMerge(textColor, 'uppercase text-[13px] -mt-1')}>
+					{direction}
+				</div>
+			</div>
+		</div>
+	);
+};
+
+const AssetCell = ({
+	className,
+	marketName,
+}: {
+	className?: string;
+	marketName: string;
+}) => {
+	return (
+		<div className={twMerge('flex gap-2 items-center', className)}>
+			<MarketIcon marketName={marketName} />
+			<div>{COMMON_UI_UTILS.getBaseAssetSymbol(marketName)}</div>
+		</div>
+	);
+};
+
+const NumericValue = ({
 	children,
 	className,
 }: {
@@ -85,11 +130,7 @@ export type TableProps<T> = {
 	className?: string;
 };
 
-export function Table<T extends RowData>({
-	data,
-	columns,
-	className,
-}: TableProps<T>) {
+function Table<T extends RowData>({ data, columns, className }: TableProps<T>) {
 	const table = useReactTable({
 		data,
 		columns,
@@ -110,3 +151,9 @@ export function Table<T extends RowData>({
 		</div>
 	);
 }
+
+Table.MarketCell = MarketCell;
+Table.AssetCell = AssetCell;
+Table.NumericValue = NumericValue;
+
+export default Table;

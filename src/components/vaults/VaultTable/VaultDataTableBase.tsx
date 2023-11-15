@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-import { Table, TableProps } from '@/components/elements/Table';
+import Table, { TableProps } from '@/components/elements/Table';
 
 export function VaultDataTableBase<T>({ className, ...rest }: TableProps<T>) {
 	return (

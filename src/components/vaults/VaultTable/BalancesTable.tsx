@@ -1,10 +1,14 @@
 import { UserBalance } from '@/types';
+import { MarketType } from '@drift-labs/sdk';
+import { COMMON_UI_UTILS } from '@drift/common';
 import { createColumnHelper } from '@tanstack/react-table';
 
-import { NumericValue } from '@/components/elements/Table';
+import Table from '@/components/elements/Table';
 
 import { useVaultBalances } from '@/hooks/table-data/useVaultBalances';
 import { useCurrentVault } from '@/hooks/useVault';
+
+import { getMarket } from '@/utils/utils';
 
 import { OrderedSpotMarkets } from '@/constants/environment';
 
@@ -13,14 +17,21 @@ import { VaultDataTableBase } from './VaultDataTableBase';
 const columnHelper = createColumnHelper<UserBalance>();
 
 const columns = [
-	columnHelper.accessor('marketIndex', {
-		header: 'Asset',
-		cell: (info) => (
-			<div className="w-[60px]">
-				{OrderedSpotMarkets[info.getValue()].symbol}
-			</div>
-		),
-	}),
+	columnHelper.accessor(
+		(balance) => {
+			const fullMarketName = COMMON_UI_UTILS.getFullMarketName(
+				getMarket(balance.marketIndex, MarketType.SPOT)
+			);
+
+			return (
+				<Table.AssetCell marketName={fullMarketName} className="w-[100px]" />
+			);
+		},
+		{
+			header: 'Market',
+			cell: (info) => info.getValue(),
+		}
+	),
 	columnHelper.accessor(
 		(row) =>
 			`${row.baseBalance.prettyPrint()} ${
@@ -30,24 +41,26 @@ const columns = [
 			id: 'baseBalance',
 			header: () => 'Balance',
 			cell: (info) => (
-				<NumericValue className="w-[215px]">{info.getValue()}</NumericValue>
+				<Table.NumericValue className="w-[215px]">
+					{info.getValue()}
+				</Table.NumericValue>
 			),
 		}
 	),
 	columnHelper.accessor('quoteValue', {
 		header: () => 'Notional',
 		cell: (info) => (
-			<NumericValue className="w-[190px]">
+			<Table.NumericValue className="w-[190px]">
 				${info.getValue().prettyPrint()}
-			</NumericValue>
+			</Table.NumericValue>
 		),
 	}),
 	columnHelper.accessor('liquidationPrice', {
 		header: () => 'Liq. Price',
 		cell: (info) => (
-			<NumericValue className="w-[140px]">
-				${info.getValue().prettyPrint()}
-			</NumericValue>
+			<Table.NumericValue className="w-[140px]">
+				{info.getValue().eqZero() ? '-' : `$${info.getValue().prettyPrint()}`}
+			</Table.NumericValue>
 		),
 	}),
 ];

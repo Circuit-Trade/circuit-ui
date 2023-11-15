@@ -1,9 +1,14 @@
-import { BigNum, PRICE_PRECISION_EXP } from '@drift-labs/sdk';
-import { COMMON_UI_UTILS } from '@drift/common';
+import {
+	BigNum,
+	MarketType,
+	PRICE_PRECISION_EXP,
+	PositionDirection,
+} from '@drift-labs/sdk';
+import { COMMON_UI_UTILS, matchEnum } from '@drift/common';
 import { createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
 
-import { NumericValue } from '@/components/elements/Table';
+import Table from '@/components/elements/Table';
 
 import {
 	UISerializableOrderWithOraclePrice,
@@ -19,16 +24,29 @@ const columnHelper = createColumnHelper<UISerializableOrderWithOraclePrice>();
 
 const columns = [
 	columnHelper.accessor(
-		(row) => {
+		(order) => {
 			const fullMarketName = COMMON_UI_UTILS.getFullMarketName(
-				getMarket(row.marketIndex, row.marketType)
+				getMarket(order.marketIndex, order.marketType)
 			);
+			const direction = matchEnum(order.marketType, MarketType.PERP)
+				? matchEnum(order.direction, PositionDirection.LONG)
+					? 'long'
+					: 'short'
+				: matchEnum(order.direction, PositionDirection.LONG)
+				? 'buy'
+				: 'sell';
 
-			return fullMarketName;
+			return (
+				<Table.MarketCell
+					marketName={fullMarketName}
+					direction={direction}
+					className="w-[100px]"
+				/>
+			);
 		},
 		{
 			header: 'Market',
-			cell: (info) => <div className="w-[100px]">{info.getValue()}</div>,
+			cell: (info) => info.getValue(),
 		}
 	),
 	columnHelper.accessor(
@@ -50,7 +68,9 @@ const columns = [
 		{
 			header: 'Filled / Size',
 			cell: (info) => (
-				<NumericValue className="w-[15 0px]">{info.getValue()}</NumericValue>
+				<Table.NumericValue className="w-[15 0px]">
+					{info.getValue()}
+				</Table.NumericValue>
 			),
 		}
 	),
@@ -73,7 +93,9 @@ const columns = [
 		{
 			header: 'Trigger / Limit',
 			cell: (info) => (
-				<NumericValue className="w-[160px]">{info.getValue()}</NumericValue>
+				<Table.NumericValue className="w-[160px]">
+					{info.getValue()}
+				</Table.NumericValue>
 			),
 		}
 	),

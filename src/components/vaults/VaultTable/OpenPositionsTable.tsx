@@ -8,7 +8,7 @@ import { COMMON_UI_UTILS, OpenPosition } from '@drift/common';
 import { createColumnHelper } from '@tanstack/react-table';
 import { twMerge } from 'tailwind-merge';
 
-import { NumericValue } from '@/components/elements/Table';
+import Table from '@/components/elements/Table';
 
 import { useVaultOpenPerpPositions } from '@/hooks/table-data/useVaultOpenPerpPositions';
 import usePathToVaultPubKey from '@/hooks/usePathToVaultName';
@@ -18,25 +18,21 @@ import { VaultDataTableBase } from './VaultDataTableBase';
 const columnHelper = createColumnHelper<OpenPosition>();
 
 const columns = [
-	columnHelper.accessor('marketSymbol', {
-		header: 'Market',
-		cell: (info) => <div className="w-[100px]">{info.getValue()}</div>,
-	}),
-	columnHelper.accessor('direction', {
-		header: 'Direction',
-		cell: (info) => (
-			<div
-				className={twMerge(
-					'w-[80px] uppercase',
-					info.getValue() === 'long'
-						? 'text-text-success-green'
-						: 'text-text-negative-red'
-				)}
-			>
-				{info.getValue()}
-			</div>
-		),
-	}),
+	columnHelper.accessor(
+		(position) => {
+			return (
+				<Table.MarketCell
+					marketName={position.marketSymbol}
+					direction={position.direction}
+					className="w-[100px]"
+				/>
+			);
+		},
+		{
+			header: 'Market',
+			cell: (info) => info.getValue(),
+		}
+	),
 	columnHelper.accessor(
 		(row) =>
 			`${BigNum.from(
@@ -46,7 +42,9 @@ const columns = [
 		{
 			header: 'Size',
 			cell: (info) => (
-				<NumericValue className="w-[140px]">{info.getValue()}</NumericValue>
+				<Table.NumericValue className="w-[140px]">
+					{info.getValue()}
+				</Table.NumericValue>
 			),
 		}
 	),
@@ -62,7 +60,9 @@ const columns = [
 		{
 			header: 'Entry',
 			cell: (info) => (
-				<NumericValue className="w-[120px]">{info.getValue()}</NumericValue>
+				<Table.NumericValue className="w-[120px]">
+					{info.getValue()}
+				</Table.NumericValue>
 			),
 		}
 	),
@@ -89,7 +89,9 @@ const columns = [
 		{
 			header: 'P&L',
 			cell: (info) => (
-				<NumericValue className="w-[160px]">{info.getValue()}</NumericValue>
+				<Table.NumericValue className="w-[160px]">
+					{info.getValue()}
+				</Table.NumericValue>
 			),
 		}
 	),
@@ -99,9 +101,9 @@ const columns = [
 			const liqPrice = BigNum.from(info.getValue(), PRICE_PRECISION_EXP);
 
 			return (
-				<NumericValue className="w-[140px]">
+				<Table.NumericValue className="w-[140px]">
 					{liqPrice.lteZero() ? 'None' : `$${liqPrice.prettyPrint()}`}
-				</NumericValue>
+				</Table.NumericValue>
 			);
 		},
 	}),
