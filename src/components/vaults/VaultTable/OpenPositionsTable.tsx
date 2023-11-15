@@ -13,8 +13,6 @@ import { NumericValue, Table } from '@/components/elements/Table';
 import { useVaultOpenPerpPositions } from '@/hooks/table-data/useVaultOpenPerpPositions';
 import usePathToVaultPubKey from '@/hooks/usePathToVaultName';
 
-import { getBaseAssetSymbol } from '@/utils/utils';
-
 const columnHelper = createColumnHelper<OpenPosition>();
 
 const columns = [
@@ -42,7 +40,7 @@ const columns = [
 			`${BigNum.from(
 				row.baseSize.abs(),
 				BASE_PRECISION_EXP
-			).prettyPrint()} ${getBaseAssetSymbol(row.marketSymbol)}`,
+			).prettyPrint()} ${COMMON_UI_UTILS.getBaseAssetSymbol(row.marketSymbol)}`,
 		{
 			header: 'Size',
 			cell: (info) => (
@@ -54,13 +52,13 @@ const columns = [
 		(row) => (
 			<div className="flex flex-col">
 				<span>${BigNum.from(row.entryPrice, PRICE_PRECISION_EXP).toNum()}</span>
-				<span className="text-[13px] text-text-secondary">
+				{/* <span className="text-[13px] text-text-secondary"> // TODO: implement dlobStore and priceStore
 					${BigNum.from(row.entryPrice, PRICE_PRECISION_EXP).toNum()}
-				</span>
+				</span> */}
 			</div>
 		),
 		{
-			header: 'Entry/Index',
+			header: 'Entry',
 			cell: (info) => (
 				<NumericValue className="w-[120px]">{info.getValue()}</NumericValue>
 			),
@@ -107,7 +105,7 @@ const columns = [
 	}),
 ];
 
-export const PositionsTable = () => {
+export const OpenPositionsTable = () => {
 	const vaultPubKey = usePathToVaultPubKey();
 	const openPositions = useVaultOpenPerpPositions(vaultPubKey);
 

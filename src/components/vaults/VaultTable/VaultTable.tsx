@@ -3,9 +3,10 @@ import { useState } from 'react';
 import ButtonTabs from '@/components/elements/ButtonTabs';
 
 import { BalancesTable } from './BalancesTable';
-import { PositionsTable } from './PositionsTable';
+import { OpenOrdersTable } from './OpenOrdersTable';
+import { OpenPositionsTable } from './OpenPositionsTable';
 
-const VAULT_TABLE_TABS = ['Positions', 'Balances'];
+const VAULT_TABLE_TABS = ['Orders', 'Positions', 'Balances'];
 
 export const VaultTable = () => {
 	const [selectedTab, setSelectedTab] = useState(VAULT_TABLE_TABS[0]);
@@ -16,7 +17,9 @@ export const VaultTable = () => {
 			default:
 				return <BalancesTable />;
 			case 'Positions':
-				return <PositionsTable />;
+				return <OpenPositionsTable />;
+			case 'Orders':
+				return <OpenOrdersTable />;
 		}
 	};
 

@@ -49,6 +49,7 @@ const Env: EnvironmentVariables = {
 };
 
 // Spot markets
+export const CURRENT_SPOT_MARKETS = SDKConfig.SPOT_MARKETS;
 export const OrderedSpotMarkets = [...MainnetSpotMarkets].sort(
 	(a, b) => a.marketIndex - b.marketIndex
 );
