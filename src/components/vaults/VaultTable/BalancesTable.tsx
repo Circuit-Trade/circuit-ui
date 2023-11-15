@@ -1,12 +1,14 @@
 import { UserBalance } from '@/types';
 import { createColumnHelper } from '@tanstack/react-table';
 
-import { NumericValue, Table } from '@/components/elements/Table';
+import { NumericValue } from '@/components/elements/Table';
 
 import { useVaultBalances } from '@/hooks/table-data/useVaultBalances';
 import { useCurrentVault } from '@/hooks/useVault';
 
 import { OrderedSpotMarkets } from '@/constants/environment';
+
+import { VaultDataTableBase } from './VaultDataTableBase';
 
 const columnHelper = createColumnHelper<UserBalance>();
 
@@ -56,5 +58,5 @@ export const BalancesTable = () => {
 	const vaultDriftUser = vault?.vaultDriftUser;
 	const vaultBalances = useVaultBalances(vaultDriftUserAccount, vaultDriftUser);
 
-	return <Table data={vaultBalances} columns={columns} />;
+	return <VaultDataTableBase data={vaultBalances} columns={columns} />;
 };

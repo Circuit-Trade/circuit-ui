@@ -8,10 +8,12 @@ import { COMMON_UI_UTILS, OpenPosition } from '@drift/common';
 import { createColumnHelper } from '@tanstack/react-table';
 import { twMerge } from 'tailwind-merge';
 
-import { NumericValue, Table } from '@/components/elements/Table';
+import { NumericValue } from '@/components/elements/Table';
 
 import { useVaultOpenPerpPositions } from '@/hooks/table-data/useVaultOpenPerpPositions';
 import usePathToVaultPubKey from '@/hooks/usePathToVaultName';
+
+import { VaultDataTableBase } from './VaultDataTableBase';
 
 const columnHelper = createColumnHelper<OpenPosition>();
 
@@ -109,5 +111,5 @@ export const OpenPositionsTable = () => {
 	const vaultPubKey = usePathToVaultPubKey();
 	const openPositions = useVaultOpenPerpPositions(vaultPubKey);
 
-	return <Table data={openPositions} columns={columns} />;
+	return <VaultDataTableBase data={openPositions} columns={columns} />;
 };

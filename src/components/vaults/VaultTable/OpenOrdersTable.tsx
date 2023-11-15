@@ -3,7 +3,7 @@ import { COMMON_UI_UTILS } from '@drift/common';
 import { createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
 
-import { NumericValue, Table } from '@/components/elements/Table';
+import { NumericValue } from '@/components/elements/Table';
 
 import {
 	UISerializableOrderWithOraclePrice,
@@ -12,6 +12,8 @@ import {
 import usePathToVaultPubKey from '@/hooks/usePathToVaultName';
 
 import { getMarket } from '@/utils/utils';
+
+import { VaultDataTableBase } from './VaultDataTableBase';
 
 const columnHelper = createColumnHelper<UISerializableOrderWithOraclePrice>();
 
@@ -48,7 +50,7 @@ const columns = [
 		{
 			header: 'Filled / Size',
 			cell: (info) => (
-				<NumericValue className="w-[160px]">{info.getValue()}</NumericValue>
+				<NumericValue className="w-[15 0px]">{info.getValue()}</NumericValue>
 			),
 		}
 	),
@@ -81,7 +83,7 @@ const OpenOrdersTableUnMemo = () => {
 	const vaultPubKey = usePathToVaultPubKey();
 	const vaultOpenOrders = useVaultOpenOrders(vaultPubKey);
 
-	return <Table data={vaultOpenOrders} columns={columns} />;
+	return <VaultDataTableBase data={vaultOpenOrders} columns={columns} />;
 };
 
 export const OpenOrdersTable = React.memo(OpenOrdersTableUnMemo);

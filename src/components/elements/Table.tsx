@@ -21,7 +21,7 @@ const TableHeader = <T extends RowData>({
 			{headerGroups.map((headerGroup) => (
 				<tr
 					key={headerGroup.id}
-					className="bg-gray-900 border border-container-border"
+					className="bg-gray-900 border-b border-container-border"
 				>
 					{headerGroup.headers.map((header) => (
 						<th key={header.id} className="px-2 py-1 text-left">
@@ -45,7 +45,7 @@ const TableBody = <T extends RowData>({
 	rowModel: RowModel<T>;
 }) => {
 	return (
-		<tbody className="border border-t-0 divide-y border-container-border divide-container-border">
+		<tbody className="border-b divide-y border-container-border divide-container-border">
 			{rowModel.rows.map((row) => (
 				<tr key={row.id}>
 					{row.getVisibleCells().map((cell) => (
@@ -79,13 +79,17 @@ export const NumericValue = ({
 	);
 };
 
+export type TableProps<T> = {
+	data: T[];
+	columns: ColumnDef<T, any>[];
+	className?: string;
+};
+
 export function Table<T extends RowData>({
 	data,
 	columns,
-}: {
-	data: T[];
-	columns: ColumnDef<T, any>[];
-}) {
+	className,
+}: TableProps<T>) {
 	const table = useReactTable({
 		data,
 		columns,
@@ -93,7 +97,12 @@ export function Table<T extends RowData>({
 	});
 
 	return (
-		<div className="max-w-full overflow-auto">
+		<div
+			className={twMerge(
+				'max-w-full overflow-auto border border-container-border thin-scroll',
+				className
+			)}
+		>
 			<table className="w-full">
 				<TableHeader<T> headerGroups={table.getHeaderGroups()} />
 				<TableBody<T> rowModel={table.getRowModel()} />
