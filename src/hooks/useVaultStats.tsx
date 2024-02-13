@@ -62,8 +62,13 @@ function useSyncVaultsStatsImpl() {
 			const vaultAccountData = vault?.vaultAccountData;
 
 			if (vaultDriftUser && vaultAccountData) {
+				console.log('🚀 fetching vault stats for:', vaultKey);
+				console.time('fetch vault stats ' + vaultKey);
 				fetchVaultStats(vaultClient, vaultDriftUser, vaultAccountData)
 					.then((newVaultStats) => {
+						console.timeEnd('fetch vault stats ' + vaultKey);
+						console.log('🚀 fetched vault stats for:', vaultKey, newVaultStats);
+
 						setAppStore((s) => {
 							s.vaults[vaultKey]!.vaultStats = newVaultStats;
 						});
