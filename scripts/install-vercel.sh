@@ -33,18 +33,24 @@ function bun_install_and_link() {
     local should_run_bun_link=$3
 
     cd ${folder}
-    print "bun install for ${folder}"
-    bun install
+    print "yarn for ${folder}"
+    #print "bun install for ${folder}"
+    yarn
+    # bun install
 
     if [ "${should_run_bun_link}" = "true" ]; then
-        print "Running bun link for ${folder}"
-        bun link
+        print "Running yarn link for ${folder}"
+        # print "Running bun link for ${folder}"
+        yarn link
+        # bun link
     fi
 
     for link in ${links[@]}
     do
-        print "bun link for ${folder} -> ${link}"
-        bun link ${link}
+        print "yarn link for ${folder} -> ${link}"
+        # print "bun link for ${folder} -> ${link}"
+        yarn link ${link}
+        # bun link ${link}
     done
 
     cd - &> /dev/null
