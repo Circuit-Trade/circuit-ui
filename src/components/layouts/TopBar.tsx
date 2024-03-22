@@ -1,6 +1,7 @@
 'use client';
 
 import useAppStore from '@/stores/app/useAppStore';
+import { Wallet } from '@drift-labs/icons';
 import { useCommonDriftStore } from '@drift-labs/react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import Image from 'next/image';
@@ -109,6 +110,7 @@ const TopBar = () => {
 				className="flex items-center w-[160px] md:w-[220px] gap-2 md:gap-3 md:justify-center md:border-r h-full border-container-border pl-4"
 				href={'/'}
 			>
+				<Wallet />
 				<Image
 					src="/circuits-icon.svg"
 					alt="Circuits Icon"
